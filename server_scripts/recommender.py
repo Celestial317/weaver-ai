@@ -25,8 +25,8 @@ from itertools import combinations
 import hashlib
 import time
 
-QDRANT_URL = "https://c977d41b-092f-4746-8055-e0c1974ed673.europe-west3-0.gcp.cloud.qdrant.io"
-QDRANT_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.-IpipKy3ymQr1qZIAvAzNZ87K1e0Qxd8B2MNKTWY07w"
+QDRANT_URL = 
+QDRANT_API_KEY = 
 QDRANT_COLLECTION_NAME = "fashion_visual_recommender"
 VECTOR_SIZE = 4
 NAMESPACE_UUID = uuid.NAMESPACE_DNS
@@ -37,9 +37,8 @@ CLOTHES_PATH = os.path.join(BASE_DIR, "clothes_tryon_dataset", "test", "cloth")
 CLASS_MAPPING_DIR = BASE_DIR
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyCMBWqTE4bIKlG8klXWrIHW4_WrjBIbEyU")
+genai.configure(api_key="")
 
-# PERFORMANCE OPTIMIZATION: Simple in-memory cache for LLM responses
 llm_cache = {}
 cache_max_size = 100  # Limit cache size to prevent memory issues
 
@@ -339,7 +338,8 @@ def extract_attributes_with_gemini(user_prompt: str) -> dict:
     # Start timing
     start_time = time.time()
     
-    llm_instruction = f"""
+    llm_instruction = f
+    """
 Extract fashion attributes from: "{user_prompt}"
 
 CRITICAL: Extract ALL explicitly mentioned attributes. Pay special attention to:
@@ -374,7 +374,7 @@ RESPOND WITH JSON ONLY:
         {{"combination_type": "full", "filters": {{"attr1": "val1", "attr2": "val2", "attr3": "val3"}}}}
     ]
 }}
-    """
+"""
 
     model = genai.GenerativeModel('gemini-2.5-pro')
     response = model.generate_content(llm_instruction)

@@ -18,10 +18,10 @@ from qdrant_client.http.exceptions import UnexpectedResponse
 from tqdm import tqdm
 
 # Step 1: Configuration
-METADATA_DIR = "/kaggle/input/dataset-for-generation/features"
-IMAGE_DIR = "/kaggle/input/dataset-for-generation/dataset_generation/cloth"
-QDRANT_URL = "https://c977d41b-092f-4746-8055-e0c1974ed673.europe-west3-0.gcp.cloud.qdrant.io"
-QDRANT_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.-IpipKy3ymQr1qZIAvAzNZ87K1e0Qxd8B2MNKTWY07w"
+METADATA_DIR = 
+IMAGE_DIR = 
+QDRANT_URL = 
+QDRANT_API_KEY = 
 QDRANT_COLLECTION_NAME = "fashion_visual_recommender"
 VECTOR_SIZE = 512
 NAMESPACE_UUID = uuid.NAMESPACE_DNS

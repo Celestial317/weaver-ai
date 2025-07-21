@@ -33,7 +33,7 @@ class StyleTransferService:
         self.canny_detector = self.models['canny_detector']
         self.device = self.models['device']
         
-        print("✅ Style Transfer Service initialized successfully!")
+        print("Style Transfer Service initialized successfully!")
     
     def _load_models(self):
         """Load the pretrained models"""
@@ -48,7 +48,7 @@ class StyleTransferService:
         with open(models_path, 'rb') as f:
             models = pickle.load(f)
         
-        print("✅ Models loaded successfully!")
+        print("Models loaded successfully!")
         return models
     
     def get_features_from_json(self, image_filename: str) -> Dict[str, Any]:
