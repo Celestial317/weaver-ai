@@ -13,8 +13,8 @@ import google.generativeai as genai
 from ast import literal_eval
 from itertools import combinations
 
-QDRANT_URL = "https://c977d41b-092f-4746-8055-e0c1974ed673.europe-west3-0.gcp.cloud.qdrant.io"
-QDRANT_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.-IpipKy3ymQr1qZIAvAzNZ87K1e0Qxd8B2MNKTWY07w"
+QDRANT_URL = 
+QDRANT_API_KEY = 
 QDRANT_COLLECTION_NAME = "fashion_clip_recommender"
 VECTOR_SIZE = 2048
 NAMESPACE_UUID = uuid.NAMESPACE_DNS
