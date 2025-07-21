@@ -1,4 +1,4 @@
-# Celestial317 Weaver AI - Fashion Recommender Web Application
+# Weaver AI
 
 ## Project Structure
 ```
@@ -58,7 +58,7 @@ Before starting, make sure you have the following environment variables configur
 
 1. **Navigate to the project directory:**
    ```bash
-   cd celestial317-weaver-ai
+   cd weaver-ai
    ```
 
 2. **Load and initialize models:**
@@ -149,10 +149,12 @@ The application now features multiple AI-powered pages:
 5. **Stylizer (/stylizer):**
    - AI-powered styling suggestions
    - Outfit coordination and recommendations
+   - Generates style transfer of two cloth images
 
 6. **Visual Designer (/visual-designer):**
    - AI-assisted fashion design tools
    - Creative design generation capabilities
+   - Ingest drawing, will return cloth
 
 7. **Catalogue (/catalogue):**
    - Browse the complete fashion database
@@ -167,7 +169,7 @@ The application runs multiple specialized servers:
 #### AI Search Server
 - **Endpoint**: `/ai-search`
 - **Features**: Natural language fashion search
-- **AI Model**: CLIP-based semantic search
+- **AI Model**: semantic search
 
 #### Recommendation Server  
 - **Endpoint**: `/recommend`
@@ -200,10 +202,10 @@ export QDRANT_URL="your_qdrant_cluster_url_here"
 ## Features
 
 ### Multi-Modal AI Platform
-- **CLIP Integration**: Advanced text-to-image search capabilities
 - **ResNet Analysis**: Deep color and pattern recognition
 - **Gemini AI**: Natural language processing and generation
 - **Vector Database**: Qdrant-powered similarity search
+- **IP Adapter with ControlNet** : for amalgam generation
 
 ### Advanced AI Features
 - **Semantic Search**: Natural language fashion queries
@@ -223,7 +225,7 @@ export QDRANT_URL="your_qdrant_cluster_url_here"
 - **Microservices**: Specialized servers for each AI feature
 - **Vector Storage**: Efficient similarity search with Qdrant
 - **Model Management**: Centralized AI model loading and caching
-- **API Integration**: RESTful services with CORS support
+- **API Integration**: FastAPI services with CORS support
 - **Development Tools**: Hot reload, TypeScript, Tailwind CSS
 
 ## Troubleshooting
@@ -311,11 +313,4 @@ export QDRANT_URL="your_qdrant_cluster_url_here"
 
 ## You're All Set!
 
-Your Celestial317 Weaver AI Fashion Platform is now running with:
-- Multi-modal AI capabilities (CLIP, ResNet, Gemini)
-- Vector-powered semantic search
-- Real-time fashion recommendations
-- AI-assisted design tools
-- Modern React interface with multiple specialized pages
-
-Explore the future of AI-powered fashion!
+Developed by Soumya Sourav | Ishansh | Hafsah
