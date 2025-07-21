@@ -22,17 +22,17 @@ try:
     import clip
     CLIP_AVAILABLE = True
 except ImportError:
-    print("⚠️  CLIP not available. Install with: pip install ftfy regex tqdm git+https://github.com/openai/CLIP.git")
+    print("⚠CLIP not available. Install with: pip install ftfy regex tqdm git+https://github.com/openai/CLIP.git")
     CLIP_AVAILABLE = False
 
 # Configuration
-QDRANT_URL = "https://c977d41b-092f-4746-8055-e0c1974ed673.europe-west3-0.gcp.cloud.qdrant.io"
-QDRANT_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.-IpipKy3ymQr1qZIAvAzNZ87K1e0Qxd8B2MNKTWY07w"
+QDRANT_URL = 
+QDRANT_API_KEY = 
 QDRANT_COLLECTION_NAME = "fashion_clip_recommender"
 VECTOR_SIZE = 512
 NAMESPACE_UUID = uuid.NAMESPACE_DNS
 
-# Get the parent directory for data files
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLOTHES_PATH = os.path.join(BASE_DIR, "clothes_tryon_dataset", "test", "cloth")
 METADATA_DIR = os.path.join(BASE_DIR, "features_extracted")
@@ -56,21 +56,19 @@ async def lifespan(app: FastAPI):
     # Startup
     print("🚀 Starting Fashion Visual Designer API...")
     
-    # Setup CLIP
     clip_ready = setup_clip()
-    
-    # Setup Qdrant
+
     qdrant_ready = setup_qdrant_collection()
     
     if clip_ready and qdrant_ready:
-        print("✅ All services initialized successfully!")
+        print("All services initialized successfully!")
     else:
-        print("⚠️  Some services failed to initialize")
+        print("⚠Some services failed to initialize")
     
     yield
     
-    # Shutdown (if needed)
-    print("👋 Shutting down Fashion Visual Designer API...")
+
+    print("Shutting down Fashion Visual Designer API...")
 
 # FastAPI app setup
 app = FastAPI(
@@ -103,16 +101,16 @@ def setup_clip():
     global clip_model, clip_preprocess
     
     if not CLIP_AVAILABLE:
-        print("❌ CLIP not available  visual search will be disabled")
+        print("CLIP not available  visual search will be disabled")
         return False
     
     try:
-        print(f"🧠 Loading CLIP model on device: {device}")
+        print(f"Loading CLIP model on device: {device}")
         clip_model, clip_preprocess = clip.load("ViT-B/32", device=device)
-        print("✅ CLIP model loaded successfully")
+        print("CLIP model loaded successfully")
         return True
     except Exception as e:
-        print(f"❌ Error loading CLIP model: {e}")
+        print(f"Error loading CLIP model: {e}")
         return False
 
 def get_clip_embedding(image: Image.Image) -> np.ndarray:
@@ -142,7 +140,7 @@ def setup_qdrant_collection():
         collection_names = [col.name for col in collections.collections]
         
         if QDRANT_COLLECTION_NAME in collection_names:
-            print(f"✅ Collection '{QDRANT_COLLECTION_NAME}' already exists")
+            print(f"Collection '{QDRANT_COLLECTION_NAME}' already exists")
             return True
     except Exception as e:
         print(f"Could not check existing collections: {e}")
@@ -154,24 +152,24 @@ def setup_qdrant_collection():
             vectors_config=VectorParams(size=VECTOR_SIZE, distance=Distance.COSINE),
         )
         
-        print("✅ Collection setup completed")
+        print("Collection setup completed")
         return True
     except UnexpectedResponse as e:
         if "already exists" in str(e).lower():
-            print(f"✅ Collection '{QDRANT_COLLECTION_NAME}' already exists")
+            print(f"Collection '{QDRANT_COLLECTION_NAME}' already exists")
             return True
         else:
-            print(f"❌ Error creating collection: {e}")
+            print(f"Error creating collection: {e}")
             return False
     except Exception as e:
-        print(f"❌ Error creating collection: {e}")
+        print(f"Error creating collection: {e}")
         return False
 
 def find_similar_items(query_vector: np.ndarray, limit: int = 10) -> List[Dict[str, Any]]:
     """Find similar items using CLIP vector similarity"""
     try:
-        print(f"🔍 Searching Qdrant collection '{QDRANT_COLLECTION_NAME}'...")
-        print(f"📊 Query vector shape: {query_vector.shape}, Limit: {limit}")
+        print(f"Searching Qdrant collection '{QDRANT_COLLECTION_NAME}'...")
+        print(f"Query vector shape: {query_vector.shape}, Limit: {limit}")
         
         # Search for similar vectors
         search_results = client.search(
@@ -181,7 +179,7 @@ def find_similar_items(query_vector: np.ndarray, limit: int = 10) -> List[Dict[s
             with_payload=True
         )
         
-        print(f"📊 Qdrant returned {len(search_results)} results")
+        print(f"Qdrant returned {len(search_results)} results")
         
         results = []
         for i, result in enumerate(search_results):
@@ -203,10 +201,10 @@ def find_similar_items(query_vector: np.ndarray, limit: int = 10) -> List[Dict[s
                 "metadata": result.payload
             })
         
-        print(f"✅ Processed {len(results)} results successfully")
+        print(f"Processed {len(results)} results successfully")
         return results
     except Exception as e:
-        print(f"❌ Error searching similar items: {e}")
+        print(f"Error searching similar items: {e}")
         import traceback
         traceback.print_exc()
         return []
@@ -214,7 +212,7 @@ def find_similar_items(query_vector: np.ndarray, limit: int = 10) -> List[Dict[s
 def populate_clip_database():
     """Populate database with CLIP embeddings from existing images"""
     if not CLIP_AVAILABLE or clip_model is None:
-        print("❌ CLIP not available  cannot populate database")
+        print("CLIP not available  cannot populate database")
         return False
     
     print("🔄 Starting CLIP database population...")
@@ -272,11 +270,11 @@ def populate_clip_database():
         if points_to_upsert:
             client.upsert(collection_name=QDRANT_COLLECTION_NAME, points=points_to_upsert, wait=True)
         
-        print(f"✅ Database population complete! Processed {processed} images.")
+        print(f"Database population complete! Processed {processed} images.")
         return True
         
     except Exception as e:
-        print(f"❌ Error populating database: {e}")
+        print(f"Error populating database: {e}")
         return False
 
 # FastAPI endpoints
@@ -320,15 +318,15 @@ async def health_check():
 @app.post("/visualsearch")
 async def visual_search(file: UploadFile = File(...), limit: int = 10):
     """Upload an image and find visually similar fashion items"""
-    print(f"🔍 Visual search request received  File: {file.filename}, Limit: {limit}")
+    print(f"Visual search request received  File: {file.filename}, Limit: {limit}")
     
     if not CLIP_AVAILABLE or clip_model is None:
-        print("❌ CLIP model not available")
+        print("CLIP model not available")
         raise HTTPException(status_code=500, detail="CLIP model not available")
     
     # Validate file type
     if not file.content_type.startswith('image/'):
-        print(f"❌ Invalid file type: {file.content_type}")
+        print(f"Invalid file type: {file.content_type}")
         raise HTTPException(status_code=400, detail="File must be an image")
     
     try:
@@ -336,20 +334,20 @@ async def visual_search(file: UploadFile = File(...), limit: int = 10):
         print("📖 Reading uploaded image...")
         contents = await file.read()
         image = Image.open(io.BytesIO(contents))
-        print(f"✅ Image loaded  Size: {image.size}, Mode: {image.mode}")
+        print(f"Image loaded  Size: {image.size}, Mode: {image.mode}")
         
         # Get CLIP embedding
         print("🧠 Extracting CLIP embedding...")
         query_vector = get_clip_embedding(image)
-        print(f"✅ CLIP embedding extracted  Vector shape: {query_vector.shape}")
+        print(f"CLIP embedding extracted  Vector shape: {query_vector.shape}")
         
         # Find similar items
         print("🔍 Searching for similar items...")
         similar_items = find_similar_items(query_vector, limit)
-        print(f"✅ Found {len(similar_items)} similar items")
+        print(f"Found {len(similar_items)} similar items")
         
         if not similar_items:
-            print("⚠️ No similar items found")
+            print("No similar items found")
             return VisualSearchResponse(
                 recommendations=[],
                 total_found=0,
@@ -358,7 +356,7 @@ async def visual_search(file: UploadFile = File(...), limit: int = 10):
                 error="No similar items found. Database might be empty."
             )
         
-        print("✅ Returning search results")
+        print("Returning search results")
         return VisualSearchResponse(
             recommendations=similar_items,
             total_found=len(similar_items),
@@ -372,7 +370,7 @@ async def visual_search(file: UploadFile = File(...), limit: int = 10):
         )
         
     except Exception as e:
-        print(f"❌ Error in visual search: {e}")
+        print(f"Error in visual search: {e}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
@@ -441,9 +439,8 @@ async def populate_sample():
         raise HTTPException(status_code=500, detail="CLIP model not available")
     
     try:
-        print("🔄 Starting sample CLIP database population...")
+        print("Starting sample CLIP database population...")
         
-        # Get list of first 5 images for testing
         image_files = [f for f in os.listdir(CLOTHES_PATH) if f.endswith('.jpg')][:5]
         
         if not image_files:
@@ -481,16 +478,16 @@ async def populate_sample():
                 )
                 
                 processed += 1
-                print(f"✅ Processed {image_file}")
+                print(f"Processed {image_file}")
                     
             except Exception as e:
-                print(f"❌ Error processing {image_file}: {e}")
+                print(f"Error processing {image_file}: {e}")
                 continue
         
         # Upsert all points
         if points_to_upsert:
             client.upsert(collection_name=QDRANT_COLLECTION_NAME, points=points_to_upsert, wait=True)
-            print(f"✅ Sample database population complete! Processed {processed} images.")
+            print(f"Sample database population complete! Processed {processed} images.")
             
             return {
                 "status": "success",
@@ -501,7 +498,7 @@ async def populate_sample():
             return {"error": "No images could be processed"}
         
     except Exception as e:
-        print(f"❌ Error populating sample database: {e}")
+        print(f"Error populating sample database: {e}")
         raise HTTPException(status_code=500, detail=f"Error populating database: {str(e)}")
 
 @app.get("/collectionstats")
@@ -510,7 +507,6 @@ async def get_collection_stats():
     try:
         collection_info = client.get_collection(QDRANT_COLLECTION_NAME)
         
-        # Get sample of items to show categories
         points, _ = client.scroll(
             collection_name=QDRANT_COLLECTION_NAME,
             limit=100,
@@ -589,8 +585,8 @@ def main():
         print("❌ Qdrant connection failed")
         return
     
-    print("✅ All services ready!")
-    print("💡 Use the API endpoints for visual search functionality")
+    print("All services ready!")
+    print("Use the API endpoints for visual search functionality")
 
 if __name__ == "__main__":
     import uvicorn
